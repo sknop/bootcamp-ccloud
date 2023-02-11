@@ -11,7 +11,7 @@ def list_invitations():
     if out.stderr == '':
         invites = json.loads(out.stdout)
         for invite in invites:
-            uids[invite['email']] = invite['user_resource_id']
+            uids[invite['email']] = invite['id']
     else:
         print(out.stderr, file=sys.stdout)
 

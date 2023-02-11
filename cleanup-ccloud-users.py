@@ -22,6 +22,8 @@ class DeleteUsers:
         # list all clusters for each environment
         # list invites
 
+        # breakpoint()
+
         self.parse_users()
         self.list_environments()
         self.list_clusters()
@@ -66,7 +68,7 @@ class DeleteUsers:
         for connect in self.connectors[cluster]:
             print(f"Delete connector {connect}")
             out = subprocess.run(
-                f"confluent connect delete --cluster {cluster} --environment {environment} {connect}".split(),
+                f"confluent connect cluster delete --force --cluster {cluster} --environment {environment} {connect}".split(),
                 capture_output=True, universal_newlines=True)
             if out.stderr != '':
                 print(out.stderr)
@@ -75,7 +77,7 @@ class DeleteUsers:
         for cluster in self.clusters[environment]:
             print(f"Deleting cluster {cluster}")
             self.delete_connectors(environment, cluster)
-            out = subprocess.run(f"confluent kafka cluster delete {cluster} --environment {environment}".split(),
+            out = subprocess.run(f"confluent kafka cluster delete --force {cluster} --environment {environment}".split(),
                                  capture_output=True, universal_newlines=True)
             if out.stderr != '':
                 print(out.stderr)
@@ -89,7 +91,7 @@ class DeleteUsers:
                 print(f"Deleting environment {env}")
                 self.delete_ksql_clusters(env)
                 self.delete_clusters(env)
-                out = subprocess.run(f"confluent environment delete {env}".split(),
+                out = subprocess.run(f"confluent environment delete --force {env}".split(),
                                      capture_output=True, universal_newlines=True)
                 if out.stderr != '':
                     print(out.stderr)

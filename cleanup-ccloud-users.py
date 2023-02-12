@@ -99,7 +99,7 @@ class DeleteUsers:
     def delete_ksql_clusters(self, env):
         for ksql_cluster in self.ksql_clusters[env]:
             print(f"Deleting ksql cluster {ksql_cluster}")
-            out = subprocess.run(f"confluent ksql cluster delete {ksql_cluster} --environment {env}".split(),
+            out = subprocess.run(f"confluent ksql cluster delete --force {ksql_cluster} --environment {env}".split(),
                                  capture_output=True, universal_newlines=True)
             if out.stderr != '':
                 print(out.stderr)
